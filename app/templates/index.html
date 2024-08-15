@@ -1,7 +1,11 @@
 <!doctype html>
 <html>
 	<head>
+		{% if title %}
 		<title>{{ title }} - Genblog</title>
+		{% else %}
+		<title>Welcome to Genblog!</title>
+		{% endif %}
 	</head>
 	<body>
 		<h1>Hello, {{ user.username }}!</h1>
