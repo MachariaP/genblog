@@ -19,7 +19,7 @@ def index():
     return render_template('index.html', title='Home', user=user, posts=posts)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     """
     Render the login page with a login form.
