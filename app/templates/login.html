@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Sign In Page Content -->
+    <h1>Sign In</h1>
+    
+    <!-- Form for user login -->
+    <form action="" method="post" novalidate>
+        <!-- CSRF token for security -->
+        {{ form.hidden_tag() }}
+        
+        <!-- Username field -->
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+        </p>
+        
+        <!-- Password field -->
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+        </p>
+        
+        <!-- Remember Me checkbox -->
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        
+        <!-- Submit button -->
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
