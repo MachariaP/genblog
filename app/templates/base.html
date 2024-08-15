@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% if title %}
+		<title>{{ title }} - Genblog</title>
+		{% else %}
+		<title>Genblog</title>
+		{% endif %}
+	</head>
+	<body>
+		<div>
+			Genblog: 
+			<a href="/index">Home</a>
+			<a href="/login">Login</a>
+		</div>
+		<hr>
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul>
+			{% for message in messages %}
+			<li>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+		{% block content %}{% endblock %}
+	</body>
+</html>
