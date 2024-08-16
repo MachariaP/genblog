@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Register</h1>
+    <!-- Registration form -->
+    <form action="" method="post">
+        <!-- CSRF protection hidden tag -->
+        {{ form.hidden_tag() }}
+        
+        <!-- Username field -->
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            <!-- Display errors for username field -->
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        
+        <!-- Email field -->
+        <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=64) }}<br>
+            <!-- Display errors for email field -->
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        
+        <!-- Password field -->
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            <!-- Display errors for password field -->
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        
+        <!-- Repeat Password field -->
+        <p>
+            {{ form.password2.label }}<br>
+            {{ form.password2(size=32) }}<br>
+            <!-- Display errors for repeat password field -->
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        
+        <!-- Submit button -->
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
