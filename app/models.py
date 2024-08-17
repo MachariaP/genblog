@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(104))
     last_seen: so.Mapped[Optional[datetime]] = so.mapped_column(
-            default=lambda: date.time.now(timezone.utc))
+            default=lambda: datetime.now(timezone.utc))
 
     posts: so.WriteOnlyMapped['Post'] = so.relationship(
             back_populates='author')
