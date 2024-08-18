@@ -1,1 +1,2 @@
 FLASK_APP=genblog.py
+FLASK_DEBUG=1
