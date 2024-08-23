@@ -78,6 +78,53 @@ class User(UserMixin, db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
+    def follow(self, user):
+        """
+        Follows the specified user.
+
+        Args:
+            user (User): The user to follow.
+        """
+        if not self.is_following(user):
+            self.following.add(user)
+
+    def unfollow(self, user):
+        """
+        Unfollows the specified user.
+
+        Args:
+            user (User): The user to unfollow.
+
+        Returns:
+            None
+        """
+        if self.is_following(user):
+            self.following.remove(user)
+
+    def is_following(self, user):
+        """
+        Checks if the current user is following the specified user.
+
+        Args:
+            user (User): The user to check.
+
+        Return:
+            int: The number of followers.
+        """
+        query = self.following.select().where(User.id == user.id)
+        return db.session.scalar(query) is not None
+
+    def followers_count(self):
+        """
+        Returns the number of users the current user is following.
+
+        Returns:
+            int: The number of users the current user is following.
+        """
+        query = sa.select(sa.func.count()).select_from(
+                self.following.select().subquery())
+        return db.session.scalar(query)
+
 
 @login.user_loader
 def load_user(id):
