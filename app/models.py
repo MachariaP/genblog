@@ -8,6 +8,16 @@ from app import login, db
 from flask_login import UserMixin
 
 
+followers = sa.Table(
+        'followers',
+        db.metadata,
+        sa.Column('follower_id', sa.Integer, sa.ForeignKey('user.id'),
+                  primary_key=True),
+        sa.Column('followed_id', sa.Integer, sa.ForeignKey('user.id'),
+                  primary_key=True)
+        )
+
+
 class User(UserMixin, db.Model):
     """
     Represents a user in the application.
@@ -31,6 +41,15 @@ class User(UserMixin, db.Model):
 
     posts: so.WriteOnlyMapped['Post'] = so.relationship(
             back_populates='author')
+    following: so.WriteOnlyMapped['User'] = so.relationship(
+            secondary=followers, primaryjoin=(followers.c.follower_id == id),
+            secondaryjoin=(followers.c.followed_id == id),
+            back_populates='followers')
+    followers: so.WriteOnlyMapped['User'] = so.relationship(
+            secondary=followers, primaryjoin=(followers.c.followed_id == id),
+            secondaryjoin=(followers.c.follower_id == id),
+            back_populates='following')
+
 
 
     def __repr__(self):
