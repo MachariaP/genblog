@@ -1,42 +1,78 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <table>
-        <tr valign="top">
-            <td><img src="{{ user.avatar(128) }}"></td>
-            <td>
-                <h1>User: {{ user.username }}</h1>
-                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-                {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
-                <p>{{ user.followers_count() }} followers, {{ user.following_count() }} following.</p>
-                {% if user == current_user %}
-                <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-                {% elif not current_user.is_following(user) %}
-                <p>
-                    <form action="{{ url_for('follow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form.submit(value='Follow') }}
-                    </form>
-                </p>
-                {% else %}
-                <p>
-                    <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form.submit(value='Unfollow') }}
-                    </form>
-                </p>
-                {% endif %}
-            </td>
-        </tr>
-    </table>
-    <hr>
-    {% for post in posts %}
-        {% include '_post.html' %}
-    {% endfor %}
-    {% if prev_url %}
-    <a href="{{ prev_url }}">Newer posts</a>
-    {% endif %}
-    {% if next_url %}
-    <a href="{{ next_url }}">Older posts</a>
-    {% endif %}
+<div class="user-page">
+    <div class="profile-header" style="background-image: url('{{ url_for('static', filename='images/profile-bg.jpg') }}');">
+        <div class="profile-avatar">
+            <img src="{{ user.avatar(128) }}" alt="{{ user.username }}'s avatar">
+        </div>
+        <div class="profile-details">
+            <h1>{{ user.username }}</h1>
+            {% if user.about_me %}
+            <p>{{ user.about_me }}</p>
+            {% endif %}
+            {% if user.last_seen %}
+            <p>Last seen on: {{ user.last_seen }}</p>
+            {% endif %}
+            <p>{{ user.followers_count() }} followers, {{ user.following_count() }} following.</p>
+            {% if user == current_user %}
+            <p><a href="{{ url_for('edit_profile') }}" class="btn btn-primary">Edit your profile</a></p>
+            {% elif not current_user.is_following(user) %}
+            <form action="{{ url_for('follow', username=user.username) }}" method="post">
+                {{ form.hidden_tag() }}
+                {{ form.submit(class="btn btn-success", value='Follow') }}
+            </form>
+            {% else %}
+            <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
+                {{ form.hidden_tag() }}
+                {{ form.submit(class="btn btn-danger", value='Unfollow') }}
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="profile-tabs">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#posts" data-toggle="tab">Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#followers" data-toggle="tab">Followers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#following" data-toggle="tab">Following</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="posts">
+                <div class="user-posts">
+                    {% for post in posts %}
+                    {% include '_post.html' %}
+                    {% endfor %}
+                </div>
+                <div class="pagination">
+                    {% if prev_url %}
+                    <a href="{{ prev_url }}" class="btn btn-secondary">Newer posts</a>
+                    {% endif %}
+                    {% if next_url %}
+                    <a href="{{ next_url }}" class="btn btn-secondary">Older posts</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="tab-pane" id="followers">
+                <ul class="list-group">
+                    {% for follower in user.followers %}
+                    <li class="list-group-item">{{ follower.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tab-pane" id="following">
+                <ul class="list-group">
+                    {% for followed in user.following %}
+                    <li class="list-group-item">{{ followed.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
