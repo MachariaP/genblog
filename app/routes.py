@@ -5,8 +5,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 import sqlalchemy as sa
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
-    EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm, \
-    NewsletterSignupForm
+    EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Post
 from app.email import send_password_reset_email
 
@@ -23,8 +22,6 @@ def before_request():
 @login_required
 def index():
     form = PostForm()
-    newsletter_form = NewsletterSignupForm()
-
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user)
         db.session.add(post)
@@ -39,14 +36,13 @@ def index():
     prev_url = url_for('index', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('index.html', title='Home', form=form,
-                           newsletter_form=newsletter_form, posts=posts.items,
-                           next_url=next_url, prev_url=prev_url)
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
 
 
 @app.route('/explore')
 @login_required
 def explore():
-    newsletter_form = NewsletterSignupForm()
     page = request.args.get('page', 1, type=int)
     query = sa.select(Post).order_by(Post.timestamp.desc())
     posts = db.paginate(query, page=page,
@@ -56,8 +52,7 @@ def explore():
     prev_url = url_for('explore', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('index.html', title='Explore', posts=posts.items,
-                           next_url=next_url, prev_url=prev_url,
-                           newsletter_form=newsletter_form)
+                           next_url=next_url, prev_url=prev_url)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -145,15 +140,9 @@ def user(username):
         if posts.has_next else None
     prev_url = url_for('user', username=user.username, page=posts.prev_num) \
         if posts.has_prev else None
-
-    # Query the followers and following collections
-    followers = user.followers
-    following = user.followed
-    
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts.items,
-                           next_url=next_url, prev_url=prev_url, form=form,
-                           followers=followers, following=following)
+                           next_url=next_url, prev_url=prev_url, form=form)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
