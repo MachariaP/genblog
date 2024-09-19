@@ -1,13 +1,51 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% import "bootstrap_wtf.html" as wtf %}
 
+{% block styles %}
+<style>
+    body {
+        background: url('/static/images/background.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+    .card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+    .pagination {
+        justify-content: center;
+    }
+    .left-align {
+        text-align: left;
+    }
+    .form-card {
+        margin-bottom: 2rem; /* Larger margin for the form card */
+    }
+    .post-card {
+        margin-bottom: 1rem; /* Smaller margin for post cards */
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+<div class="container mt-5">
+    <h1 class="left-align">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     {% if form %}
-    {{ wtf.quick_form(form) }}
+        <div class="card form-card">
+            <div class="card-body">
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
     {% endif %}
     {% for post in posts %}
-        {% include '_post.html' %}
+        <div class="card post-card">
+            <div class="card-body">
+                {% include '_post.html' %}
+            </div>
+        </div>
     {% endfor %}
     <nav aria-label="Post navigation">
         <ul class="pagination">
@@ -23,4 +61,5 @@
             </li>
         </ul>
     </nav>
+</div>
 {% endblock %}

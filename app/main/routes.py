@@ -239,3 +239,14 @@ def notifications():
         'data': n.get_data(),
         'timestamp': n.timestamp
     } for n in notifications]
+
+
+# New endpoints for privacy and terms
+@bp.route('/privacy')
+def privacy():
+    return render_template('privacy.html', title=_('Privacy Policy'))
+
+
+@bp.route('/terms')
+def terms():
+    return render_template('terms.html', title=_('Terms of Service'))
