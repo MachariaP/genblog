@@ -35,10 +35,30 @@ nosetests.xml
 .project
 .pydevproject
 
+# Virtual environments
 venv
+
+# Database files
 app.db
+
+# Log files
 microblog.log*
+
+# Elasticsearch files
 elasticsearch-8.15.1/
 elasticsearch-8.15.1-linux-x86_64.tar.gz
 elasticsearch-8.15.1-linux-x86_64.tar.gz.sha512
-venv/
+
+# Vagrant and VirtualBox files
+.vagrant/
+vagrant_2.2.19_x86_64.deb
+vagrant_2.2.19_x86_64.deb.1
+virtualbox-6.1_6.1.40-154048~Ubuntu~bionic_amd64.deb
+virtualbox-6.1_6.1.40-154048~Ubuntu~bionic_amd64.deb.1
+
+# Other untracked files
+Dockerfile
+Vagrantfile
+boot.sh
+install_vagrant.sh
+setelastic.py
