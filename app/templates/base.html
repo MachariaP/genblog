@@ -80,8 +80,10 @@
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="{{ url_for('main.messages') }}">{{ _('Messages') }}
                 {% set unread_message_count = current_user.unread_message_count() %}
+
                 <span id="message_count" class="badge bg-danger"
                       style="visibility: {% if unread_message_count %}visible
+
                                          {% else %}hidden{% endif %};">
                     {{ unread_message_count }}
                 </span>
@@ -103,9 +105,10 @@
       {% with tasks = current_user.get_tasks_in_progress() %}
       {% if tasks %}
         {% for task in tasks %}
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
           {{ task.description }}
           <span id="{{ task.id }}-progress">{{ task.get_progress() }}</span>%
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
       {% endif %}
@@ -115,7 +118,10 @@
       {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-info" role="alert">{{ message }}</div>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
         {% endfor %}
       {% endif %}
       {% endwith %}
