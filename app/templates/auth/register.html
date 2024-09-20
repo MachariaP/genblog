@@ -1,7 +1,51 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% import "bootstrap_wtf.html" as wtf %}
 
+{% block styles %}
+<style>
+    body {
+        background: url('/static/images/background.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+    .card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+    }
+    .card-body {
+        padding: 2rem;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <h1>{{ _('Register') }}</h1>
-    {{ wtf.quick_form(form) }}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-center">{{ _('Register') }}</h1>
+                    {{ wtf.quick_form(form) }}
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            {% for field, errors in form.errors.items() %}
+                                {% for error in errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="footer mt-5">
+    <div class="container text-center">
+        <p>&copy; {{ current_year }} Your Company. All rights reserved.</p>
+        <p><a href="{{ url_for('main.privacy') }}">{{ _('Privacy Policy') }}</a> | <a href="{{ url_for('main.terms') }}">{{ _('Terms of Service') }}</a></p>
+    </div>
+</div>
 {% endblock %}
