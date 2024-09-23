@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-18 14:39+0300\n"
+"POT-Creation-Date: 2024-09-20 17:29+0300\n"
 "PO-Revision-Date: 2017-09-29 23:25-0700\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -47,7 +47,7 @@ msgstr "Contraseña"
 msgid "Remember Me"
 msgstr "Recordarme"
 
-#: app/auth/forms.py:14 app/auth/routes.py:30 app/templates/auth/login.html:5
+#: app/auth/forms.py:14 app/auth/routes.py:30 app/templates/auth/login.html:10
 msgid "Sign In"
 msgstr "Ingresar"
 
@@ -60,7 +60,7 @@ msgid "Repeat Password"
 msgstr "Repetir Contraseña"
 
 #: app/auth/forms.py:24 app/auth/routes.py:51
-#: app/templates/auth/register.html:5
+#: app/templates/auth/register.html:26
 msgid "Register"
 msgstr "Registrarse"
 
@@ -108,7 +108,7 @@ msgstr "Enviar"
 msgid "Say something"
 msgstr "Dí algo"
 
-#: app/main/forms.py:40 app/main/routes.py:177
+#: app/main/forms.py:40 app/main/routes.py:177 app/templates/base.html:76
 msgid "Search"
 msgstr "Buscar"
 
@@ -120,11 +120,11 @@ msgstr "Mensaje"
 msgid "Your post is now live!"
 msgstr "¡Tu artículo ha sido publicado!"
 
-#: app/main/routes.py:49 app/templates/base.html:27
+#: app/main/routes.py:49 app/templates/base.html:68
 msgid "Home"
 msgstr "Inicio"
 
-#: app/main/routes.py:66 app/templates/base.html:30
+#: app/main/routes.py:66 app/templates/base.html:71
 msgid "Explore"
 msgstr "Explorar"
 
@@ -175,6 +175,16 @@ msgstr "Una tarea de exportación esta en progreso"
 msgid "Exporting posts..."
 msgstr "Exportando artículos..."
 
+#: app/main/routes.py:247 app/templates/auth/register.html:48
+#: app/templates/base.html:137
+msgid "Privacy Policy"
+msgstr ""
+
+#: app/main/routes.py:252 app/templates/auth/register.html:48
+#: app/templates/base.html:137
+msgid "Terms of Service"
+msgstr ""
+
 #: app/templates/_post.html:21
 #, python-format
 msgid "%(username)s said %(when)s"
@@ -194,34 +204,34 @@ msgstr "Traducir"
 msgid "Welcome to Genblog"
 msgstr "Bienvenido a Microblog"
 
-#: app/templates/base.html:43
+#: app/templates/base.html:83
 msgid "Login"
 msgstr "Ingresar"
 
-#: app/templates/base.html:47 app/templates/messages.html:4
+#: app/templates/base.html:87 app/templates/messages.html:4
 msgid "Messages"
 msgstr "Mensajes"
 
-#: app/templates/base.html:57
+#: app/templates/base.html:97
 msgid "Profile"
 msgstr "Perfil"
 
-#: app/templates/base.html:60
+#: app/templates/base.html:100
 msgid "Logout"
 msgstr "Salir"
 
-#: app/templates/index.html:5
+#: app/templates/index.html:37
 #, python-format
 msgid "Hi, %(username)s!"
 msgstr "¡Hola, %(username)s!"
 
-#: app/templates/index.html:16 app/templates/search.html:12
-#: app/templates/user.html:47
+#: app/templates/index.html:48 app/templates/search.html:12
+#: app/templates/user.html:50
 msgid "Newer posts"
 msgstr "Artículos siguientes"
 
-#: app/templates/index.html:21 app/templates/search.html:17
-#: app/templates/user.html:52
+#: app/templates/index.html:53 app/templates/search.html:17
+#: app/templates/user.html:55
 msgid "Older posts"
 msgstr "Artículos previos"
 
@@ -242,57 +252,57 @@ msgstr ""
 msgid "Send Message to %(recipient)s"
 msgstr "Enviar Mensaje a %(recipient)s"
 
-#: app/templates/user.html:8
+#: app/templates/user.html:11
 msgid "User"
 msgstr "Usuario"
 
-#: app/templates/user.html:11 app/templates/user_popup.html:7
+#: app/templates/user.html:14 app/templates/user_popup.html:7
 msgid "Last seen on"
 msgstr "Última visita"
 
-#: app/templates/user.html:13 app/templates/user_popup.html:9
+#: app/templates/user.html:16 app/templates/user_popup.html:9
 #, python-format
 msgid "%(count)d followers"
 msgstr "%(count)d seguidores"
 
-#: app/templates/user.html:13 app/templates/user_popup.html:9
+#: app/templates/user.html:16 app/templates/user_popup.html:9
 #, python-format
 msgid "%(count)d following"
 msgstr "siguiendo a %(count)d"
 
-#: app/templates/user.html:15
+#: app/templates/user.html:18
 msgid "Edit your profile"
 msgstr "Editar tu perfil"
 
-#: app/templates/user.html:17
+#: app/templates/user.html:20
 msgid "Export your posts"
 msgstr "Exportar tus artículos"
 
-#: app/templates/user.html:23 app/templates/user_popup.html:15
+#: app/templates/user.html:26 app/templates/user_popup.html:15
 msgid "Follow"
 msgstr "Seguir"
 
-#: app/templates/user.html:30 app/templates/user_popup.html:22
+#: app/templates/user.html:33 app/templates/user_popup.html:22
 msgid "Unfollow"
 msgstr "Dejar de seguir"
 
-#: app/templates/user.html:35
+#: app/templates/user.html:38
 msgid "Send private message"
 msgstr "Enviar mensaje privado"
 
-#: app/templates/auth/login.html:7
+#: app/templates/auth/login.html:21
 msgid "New User?"
 msgstr "¿Usuario Nuevo?"
 
-#: app/templates/auth/login.html:7
+#: app/templates/auth/login.html:21
 msgid "Click to Register!"
 msgstr "¡Haz click aquí para registrarte!"
 
-#: app/templates/auth/login.html:9
+#: app/templates/auth/login.html:23
 msgid "Forgot Your Password?"
 msgstr "¿Te olvidaste tu contraseña?"
 
-#: app/templates/auth/login.html:10
+#: app/templates/auth/login.html:24
 msgid "Click to Reset It"
 msgstr "Haz click aquí para pedir una nueva"
 
@@ -324,3 +334,4 @@ msgstr "El administrador ha sido notificado. ¡Lamentamos la inconveniencia!"
 
 #~ msgid "Next results"
 #~ msgstr ""
+
