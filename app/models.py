@@ -107,12 +107,12 @@ class User(UserMixin, db.Model):
             sa.String(120), index=True, unique=True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(140))
-    last_seen: so.Mapped[Optional[datetime]] =
-    so.mapped_column(default=lambda: datetime.now(timezone.utc))
+    last_seen: so.Mapped[Optional[datetime]] = so.mapped_column(
+            default=lambda: datetime.now(timezone.utc))
     last_message_read_time: so.Mapped[Optional[datetime]]
 
-    posts: so.WriteOnlyMapped['Post'] =
-    so.relationship(back_populates='author')
+    posts: so.WriteOnlyMapped['Post'] = so.relationship(
+            back_populates='author')
     following: so.WriteOnlyMapped['User'] = so.relationship(
         secondary=followers, primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.followed_id == id),
