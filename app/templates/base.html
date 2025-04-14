@@ -1,231 +1,194 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ g.locale }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% if title %}
-    <title>{{ title }} - Genblog</title>
-    {% else %}
-    <title>{{ _('Welcome to Genblog') }}</title>
-    {% endif %}
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        font-family: 'Roboto', sans-serif;
-      }
-      body {
-        display: flex;
-        flex-direction: column;
-        background: url('/static/images/background.jpg') no-repeat center center fixed;
-        background-size: cover;
-      }
-      .content {
-        flex: 1;
-      }
-      .navbar {
-        background-color: rgba(0, 0, 0, 0.8);
-      }
-      .navbar-brand, .nav-link {
-        color: #fff !important;
-      }
-      .navbar-brand:hover, .nav-link:hover {
-        color: #f8f9fa !important;
-      }
-      .alert {
-        margin-top: 1rem;
-      }
-      .footer {
-        background-color: rgba(0, 0, 0, 0.8);
-        color: #fff;
-        padding: 1rem 0;
-      }
-      .footer a {
-        color: #f8f9fa;
-        text-decoration: none;
-      }
-      .footer a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    <title>{% if title %}{{ title }} - Genblog{% else %}{{ _('Welcome to Genblog') }}{% endif %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block styles %}{% endblock %}
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        <a class="navbar-brand" href="{{ url_for('main.index') }}">Genblog</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('main.index') }}">{{ _('Home') }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('main.explore') }}">{{ _('Explore') }}</a>
-            </li>
+    <header>
+      <nav class="navbar navbar-expand-lg" aria-label="{{ _('Main navigation') }}">
+        <div class="container">
+          <a class="navbar-brand" href="{{ url_for('main.index') }}">Genblog</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="{{ _('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.index') }}">{{ _('Home') }}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.explore') }}">{{ _('Explore') }}</a>
+              </li>
+            </ul>
             {% if g.search_form %}
-            <form class="d-flex" method="get" action="{{ url_for('main.search') }}">
-                <input class="form-control me-2" type="search" placeholder="{{ g.search_form.q.label.text }}" aria-label="Search" name="q">
-                <button class="btn btn-outline-light" type="submit">{{ _('Search') }}</button>
+            <form class="d-flex me-3" method="get" action="{{ url_for('main.search') }}" role="search">
+              <input class="form-control me-2" type="search" placeholder="{{ g.search_form.q.label.text }}" aria-label="{{ _('Search') }}" name="q">
+              <button class="btn btn-outline-light" type="submit">{{ _('Search') }}</button>
             </form>
             {% endif %}
-          </ul>
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            {% if current_user.is_anonymous %}
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('main.messages') }}">{{ _('Messages') }}
-                {% set unread_message_count = current_user.unread_message_count() %}
-                <span id="message_count" class="badge bg-danger"
-                      style="visibility: {% if unread_message_count %}visible
-                                         {% else %}hidden{% endif %};">
-                    {{ unread_message_count }}
-                </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('main.user', username=current_user.username) }}">{{ _('Profile') }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
-            </li>
-            {% endif %}
-          </ul>
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              {% if current_user.is_anonymous %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.messages') }}">
+                  {{ _('Messages') }}
+                  {% set unread_count = current_user.unread_message_count() %}
+                  <span id="message-count" class="badge bg-danger" style="visibility: {% if unread_count %}visible{% else %}hidden{% endif %};">
+                    {{ unread_count }}
+                  </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.user', username=current_user.username) }}">{{ _('Profile') }}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-    <div class="container mt-3 content">
-      {% if current_user.is_authenticated %}
-      {% with tasks = current_user.get_tasks_in_progress() %}
-      {% if tasks %}
+      </nav>
+    </header>
+
+    <main class="content">
+      <div class="container">
+        {% if current_user.is_authenticated %}
+        {% with tasks = current_user.get_tasks_in_progress() %}
+        {% if tasks %}
         {% for task in tasks %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
           {{ task.description }}
           <span id="{{ task.id }}-progress">{{ task.get_progress() }}</span>%
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('Close') }}"></button>
         </div>
         {% endfor %}
-      {% endif %}
-      {% endwith %}
-      {% endif %}
+        {% endif %}
+        {% endwith %}
+        {% endif %}
 
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
         {% for message in messages %}
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong> {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('Close') }}"></button>
+        </div>
         {% endfor %}
-      {% endif %}
-      {% endwith %}
-      {% block content %}{% endblock %}
-    </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
     <footer class="footer">
-      <div class="container text-center">
-        <p>&copy; {{ current_year }} Genblog. All rights reserved.</p>
-        <!-- <p><a href="{{ url_for('main.privacy') }}">{{ _('Privacy Policy') }}</a> | <a href="{{ url_for('main.terms') }}">{{ _('Terms of Service') }}</a></p> -->
+      <div class="container">
+        <p>© {{ current_year }} Genblog. All rights reserved.</p>
       </div>
     </footer>
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous">
-    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
     <script>
-      async function translate(sourceElem, destElem, sourceLang, destLang) {
-        document.getElementById(destElem).innerHTML = 
-          '<img src="{{ url_for('static', filename='loading.gif') }}">';
-        const response = await fetch('/translate', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json; charset=utf-8'},
-          body: JSON.stringify({
-            text: document.getElementById(sourceElem).innerText,
-            source_language: sourceLang,
-            dest_language: destLang
-          })
-        })
-        const data = await response.json();
-        document.getElementById(destElem).innerText = data.text;
+      async function translate(sourceId, destId, sourceLang, destLang) {
+        const dest = document.getElementById(destId);
+        dest.innerHTML = `<img src="{{ url_for('static', filename='loading.gif') }}" alt="{{ _('Loading') }}">`;
+        try {
+          const response = await fetch('/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            body: JSON.stringify({
+              text: document.getElementById(sourceId).innerText,
+              source_language: sourceLang,
+              dest_language: destLang
+            })
+          });
+          const data = await response.json();
+          dest.innerText = data.text;
+        } catch (error) {
+          dest.innerText = '{{ _("Translation failed") }}';
+          console.error('Translation error:', error);
+        }
       }
 
-      function initialize_popovers() {
-        const popups = document.getElementsByClassName('user_popup');
-        for (let i = 0; i < popups.length; i++) {
-          const popover = new bootstrap.Popover(popups[i], {
+      function initializePopovers() {
+        document.querySelectorAll('.user-popup').forEach(popup => {
+          const popover = new bootstrap.Popover(popup, {
             content: 'Loading...',
             trigger: 'hover focus',
             placement: 'right',
             html: true,
             sanitize: false,
-            delay: {show: 500, hide: 0},
-            container: popups[i],
-            customClass: 'd-inline',
+            delay: { show: 500, hide: 0 },
+            container: popup
           });
-          popups[i].addEventListener('show.bs.popover', async (ev) => {
-            if (ev.target.popupLoaded) {
-              return;
-            }
-            const response = await fetch('/user/' + ev.target.innerText.trim() + '/popup');
-            const data = await response.text();
-            const popover = bootstrap.Popover.getInstance(ev.target);
-            if (popover && data) {
-              ev.target.popupLoaded = true;
-              popover.setContent({'.popover-body': data});
-              flask_moment_render_all();
-            }
-          });
-        }
-      }
-      document.addEventListener('DOMContentLoaded', initialize_popovers);
 
-      function set_message_count(n) {
-        const count = document.getElementById('message_count');
-        count.innerText = n;
-        count.style.visibility = n ? 'visible' : 'hidden';
+          popup.addEventListener('show.bs.popover', async () => {
+            if (popup.dataset.loaded) return;
+            try {
+              const response = await fetch(`/user/${popup.innerText.trim()}/popup`);
+              const data = await response.text();
+              const instance = bootstrap.Popover.getInstance(popup);
+              if (instance && data) {
+                popup.dataset.loaded = 'true';
+                instance.setContent({ '.popover-body': data });
+                flask_moment_render_all();
+              }
+            } catch (error) {
+              console.error('Popover fetch failed:', error);
+            }
+          });
+        });
       }
 
-      function set_task_progress(task_id, progress) {
-        const progressElement = document.getElementById(task_id + '-progress');
-        if (progressElement) {
-          progressElement.innerText = progress;
-        }
+      function setMessageCount(count) {
+        const badge = document.getElementById('message-count');
+        badge.innerText = count;
+        badge.style.visibility = count ? 'visible' : 'hidden';
+      }
+
+      function setTaskProgress(taskId, progress) {
+        const element = document.getElementById(`${taskId}-progress`);
+        if (element) element.innerText = progress;
       }
 
       {% if current_user.is_authenticated %}
-      function initialize_notifications() {
+      function initializeNotifications() {
         let since = 0;
-        setInterval(async function() {
-          const response = await fetch('{{ url_for('main.notifications') }}?since=' + since);
-          const notifications = await response.json();
-          for (let i = 0; i < notifications.length; i++) {
-            switch (notifications[i].name) {
-              case 'unread_message_count':
-                set_message_count(notifications[i].data);
-                break;
-              case 'task_progress':
-                set_task_progress(notifications[i].data.task_id,
-                    notifications[i].data.progress);
-                break;
-            }
-            since = notifications[i].timestamp;
+        setInterval(async () => {
+          try {
+            const response = await fetch(`{{ url_for('main.notifications') }}?since=${since}`);
+            const notifications = await response.json();
+            notifications.forEach(({ name, data, timestamp }) => {
+              if (name === 'unread_message_count') setMessageCount(data);
+              if (name === 'task_progress') setTaskProgress(data.task_id, data.progress);
+              since = timestamp;
+            });
+          } catch (error) {
+            console.error('Notification fetch failed:', error);
           }
         }, 10000);
       }
-      document.addEventListener('DOMContentLoaded', initialize_notifications);
       {% endif %}
+
+      document.addEventListener('DOMContentLoaded', () => {
+        initializePopovers();
+        {% if current_user.is_authenticated %}
+        initializeNotifications();
+        {% endif %}
+      });
     </script>
+    {% block scripts %}{% endblock %}
   </body>
 </html>
