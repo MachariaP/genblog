@@ -6,19 +6,28 @@
 {% endblock %}
 
 {% block content %}
+<div class="hero-section text-center mb-5">
+  <h1 class="hero-title">{{ _('Welcome to Genblog') }}</h1>
+  <p class="hero-subtitle">{{ _('Share your stories, connect with others, and explore new ideas') }}</p>
+  {% if current_user.is_anonymous %}
+  <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">{{ _('Join Now') }}</a>
+  {% endif %}
+</div>
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-lg-8">
-      <div class="card">
+      <div class="card animate">
         <div class="card-body">
-          <h1 class="greeting">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+          {% if current_user.is_authenticated %}
+          <h2 class="greeting">{{ _('Hi, %(username)s!', username=current_user.username) }}</h2>
           {% if form %}
-          <div class="form-card">
+          <div class="form-card shadow-sm">
             {{ wtf.quick_form(form) }}
           </div>
           {% endif %}
+          {% endif %}
           {% for post in posts %}
-          <div class="post-card">
+          <div class="post-card animate">
             {% include '_post.html' %}
           </div>
           {% endfor %}
@@ -26,12 +35,12 @@
             <ul class="pagination">
               <li class="page-item{% if not prev_url %} disabled{% endif %}">
                 <a class="page-link" href="{{ prev_url }}" aria-label="{{ _('Newer posts') }}">
-                  <span aria-hidden="true">&larr;</span> {{ _('Newer posts') }}
+                  <span aria-hidden="true">←</span> {{ _('Newer posts') }}
                 </a>
               </li>
               <li class="page-item{% if not next_url %} disabled{% endif %}">
                 <a class="page-link" href="{{ next_url }}" aria-label="{{ _('Older posts') }}">
-                  {{ _('Older posts') }} <span aria-hidden="true">&rarr;</span>
+                  {{ _('Older posts') }} <span aria-hidden="true">→</span>
                 </a>
               </li>
             </ul>
