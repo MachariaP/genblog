@@ -53,7 +53,6 @@ document.querySelectorAll('.post-comment').forEach(button => {
       .then(data => {
         if (response.ok) {
           button.querySelector('.comment-count').textContent = data.comments;
-          // Optionally display the comment client-side
           console.log('Comment posted:', data.comment);
         } else {
           console.error('Comment failed:', data.error);
