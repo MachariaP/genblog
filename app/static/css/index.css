@@ -1,8 +1,35 @@
-.card {
-    background-color: rgba(255, 255, 255, var(--background-opacity));
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #4f46e5 100%);
+    color: #ffffff;
+    padding: 4rem 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card {
+    background: var(--card-bg);
     border-radius: 12px;
     box-shadow: var(--card-shadow);
     margin-bottom: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
   
   .card-body {
@@ -13,10 +40,19 @@
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
+    color: var(--text-color);
   }
   
   .form-card {
     margin-bottom: 2rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .form-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
   .post-card {
@@ -33,13 +69,30 @@
     margin: 0 0.25rem;
     color: var(--primary-color);
     font-weight: 600;
+    transition: background 0.2s ease;
   }
   
   .page-link:hover {
-    background-color: #e5e7eb;
+    background: linear-gradient(90deg, #e5e7eb 0%, #d1d5db 100%);
+  }
+  
+  .animate {
+    animation: fadeIn 0.5s ease-in;
   }
   
   @media (max-width: 768px) {
+    .hero-section {
+      padding: 3rem 1.5rem;
+    }
+  
+    .hero-title {
+      font-size: 2rem;
+    }
+  
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+  
     .card-body {
       padding: 1.5rem;
     }
