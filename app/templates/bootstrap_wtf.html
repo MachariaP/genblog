@@ -1,70 +1,50 @@
-{% macro form_field(field, autofocus) %}
-  {%- if field.type == 'BooleanField' %}
+{% macro form_field(field) %}
+  {% set field_id = field.id or field.name %}
+  {% if field.type == 'BooleanField' %}
   <div class="form-check mb-3">
-    {{ field(class='form-check-input') }}
-    {{ field.label(class='form-check-label') }}
+    {{ field(class='form-check-input', id=field_id) }}
+    {{ field.label(class='form-check-label', for=field_id) }}
   </div>
-  {%- elif field.type == 'RadioField' %}
+  {% elif field.type == 'RadioField' %}
+  <div class="mb-3">
     {{ field.label(class='form-label') }}
-    {%- for item in field %}
-    <div class="form-check{% if loop.last %} mb-3{% endif %}">
-      {{ item(class='form-check-input') }}
-      {{ item.label(class='form-check-label') }}
+    {% for item in field %}
+    <div class="form-check">
+      {{ item(class='form-check-input', id=item.id) }}
+      {{ item.label(class='form-check-label', for=item.id) }}
     </div>
-    {%- endfor %}
-  {%- elif field.type == 'SelectField' %}
-    {{ field.label(class='form-label') }}
-    {{ field(class='form-select mb-3') }}
-  {%- elif field.type == 'TextAreaField' %}
-  <div class="mb-3">
-    {{ field.label(class='form-label') }}
-    {% if autofocus %}
-      {{ field(class='form-control' + (' is-invalid' if field.errors else ''), autofocus=True) }}
-    {% else %}
-      {{ field(class='form-control' + (' is-invalid' if field.errors else '')) }}
-    {% endif %}
-    {%- for error in field.errors %}
-    <div class="invalid-feedback">{{ error }}</div>
-    {%- endfor %}
+    {% endfor %}
   </div>
-  {%- elif field.type == 'SubmitField' %}
-  {{ field(class='btn btn-primary mb-3') }}
-  {%- else %}
+  {% elif field.type == 'SelectField' %}
   <div class="mb-3">
-    {{ field.label(class='form-label') }}
-    {% if autofocus %}
-      {{ field(class='form-control' + (' is-invalid' if field.errors else ''), autofocus=True) }}
-    {% else %}
-      {{ field(class='form-control' + (' is-invalid' if field.errors else '')) }}
-    {% endif %}
-    {%- for error in field.errors %}
-    <div class="invalid-feedback">{{ error }}</div>
-    {%- endfor %}
+    {{ field.label(class='form-label', for=field_id) }}
+    {{ field(class='form-select' + (' is-invalid' if field.errors else ''), id=field_id) }}
+    {% for error in field.errors %}
+    <div class="invalid-feedback" id="{{ field_id }}-error">{{ error }}</div>
+    {% endfor %}
   </div>
-  {%- endif %}
+  {% elif field.type == 'SubmitField' %}
+  <div class="mb-3">
+    {{ field(class='btn btn-primary') }}
+  </div>
+  {% else %}
+  <div class="mb-3">
+    {{ field.label(class='form-label', for=field_id) }}
+    {{ field(class='form-control' + (' is-invalid' if field.errors else ''), id=field_id, **{'aria-describedby': field_id + '-error' if field.errors else ''}) }}
+    {% for error in field.errors %}
+    <div class="invalid-feedback" id="{{ field_id }}-error">{{ error }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
 {% endmacro %}
 
-{% macro quick_form(form, action="", method="post", id="", novalidate=False) %}
-<form
-  {%- if action != None %} action="{{ action }}"{% endif -%}
-  {%- if method %} method="{{ method }}"{% endif %}
-  {%- if id %} id="{{ id }}"{% endif -%}
-  {%- if novalidate %} novalidate{% endif -%}>
+{% macro quick_form(form, action='', method='post', id='', novalidate=False) %}
+<form {% if action %}action="{{ action }}"{% endif %} method="{{ method }}" {% if id %}id="{{ id }}"{% endif %} {% if novalidate %}novalidate{% endif %} role="form">
   {{ form.hidden_tag() }}
-  {%- for field, errors in form.errors.items() %}
-    {%- if form[field].widget.input_type == 'hidden' %}
-      {%- for error in errors %}
-      <div class="invalid-feedback">{{ error }}</div>
-      {%- endfor %}
-    {%- endif %}
-  {%- endfor %}
-
-  {% set ns = namespace(first_field=true) %}
-  {%- for field in form %}
-    {% if field.widget.input_type != 'hidden' -%}
-      {{ form_field(field, ns.first_field) }}
-      {% set ns.first_field = false %}
-    {%- endif %}
-  {%- endfor %}  
+  {% for field in form %}
+    {% if field.widget.input_type != 'hidden' %}
+      {{ form_field(field) }}
+    {% endif %}
+  {% endfor %}
 </form>
 {% endmacro %}
