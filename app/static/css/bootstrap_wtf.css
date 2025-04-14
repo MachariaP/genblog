@@ -1,0 +1,47 @@
+.form-control,
+.form-select {
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.form-check-input {
+  margin-top: 0.25rem;
+}
+
+.form-check-label {
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 576px) {
+  .form-control,
+  .form-select {
+    font-size: 0.9375rem;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
