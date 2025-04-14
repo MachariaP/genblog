@@ -1,22 +1,42 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+{% endblock %}
 
 {% block content %}
-    <h1>{{ _('Search Results') }}</h1>
-    {% for post in posts %}
-        {% include '_post.html' %}
-    {% endfor %}
-    <nav aria-label="Post navigation">
-        <ul class="pagination">
-            <li class="page-item{% if not prev_url %} disabled{% endif %}">
-                <a class="page-link" href="{{ prev_url }}">
-                    <span aria-hidden="true">&larr;</span> {{ _('Newer posts') }}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <h1>{{ _('Search Results') }}</h1>
+          {% if posts %}
+          {% for post in posts %}
+          <div class="post-card">
+            {% include '_post.html' %}
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="no-results">{{ _('No results found.') }}</p>
+          {% endif %}
+          <nav aria-label="{{ _('Post navigation') }}">
+            <ul class="pagination">
+              <li class="page-item{% if not prev_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ prev_url }}" aria-label="{{ _('Newer posts') }}">
+                  <span aria-hidden="true">&larr;</span> {{ _('Newer posts') }}
                 </a>
-            </li>
-            <li class="page-item{% if not next_url %} disabled{% endif %}">
-                <a class="page-link" href="{{ next_url }}">
-                    {{ _('Older posts') }} <span aria-hidden="true">&rarr;</span>
+              </li>
+              <li class="page-item{% if not next_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ next_url }}" aria-label="{{ _('Older posts') }}">
+                  {{ _('Older posts') }} <span aria-hidden="true">&rarr;</span>
                 </a>
-            </li>
-        </ul>
-    </nav>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
