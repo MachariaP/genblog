@@ -1,0 +1,57 @@
+.post-card {
+    background-color: transparent;
+    margin-bottom: 1rem;
+  }
+  
+  .post-content {
+    padding: 1rem;
+  }
+  
+  .post-avatar-container {
+    flex-shrink: 0;
+  }
+  
+  .post-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .post-meta {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  
+  .post-body {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  .translate-link {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+  
+  .translate-link:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .post-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .post-avatar-container {
+      margin-bottom: 0.75rem;
+    }
+  
+    .post-meta {
+      font-size: 0.8125rem;
+    }
+  }
