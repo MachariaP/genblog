@@ -1,111 +1,44 @@
 {% extends 'base.html' %}
-{% import "bootstrap_wtf.html" as wtf %}
+{% import 'bootstrap_wtf.html' as wtf %}
+
 {% block styles %}
-<style>
-    body {
-        background: url('/static/images/background.jpg') no-repeat center center fixed;
-        background-size: cover;
-    }
-    .card {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 10px;
-        margin-bottom: 1rem;
-    }
-    .card-body {
-        padding: 1.5rem;
-    }
-    .pagination {
-        justify-content: end;
-    }
-    .left-align {
-        text-align: left;
-    }
-    .form-card {
-        margin-bottom: 2rem;
-    }
-    .post-card {
-        margin-bottom: 1rem;
-    }
-    .navbar {
-        margin-bottom: 2rem;
-    }
-    footer {
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 1rem 0;
-        position: fixed;
-        width: 100%;
-        bottom: 0;
-        text-align: center;
-    }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
+
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">MySite</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="greeting">{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+          {% if form %}
+          <div class="form-card">
+            {{ wtf.quick_form(form) }}
+          </div>
+          {% endif %}
+          {% for post in posts %}
+          <div class="post-card">
+            {% include '_post.html' %}
+          </div>
+          {% endfor %}
+          <nav aria-label="{{ _('Post navigation') }}">
+            <ul class="pagination">
+              <li class="page-item{% if not prev_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ prev_url }}" aria-label="{{ _('Newer posts') }}">
+                  <span aria-hidden="true">&larr;</span> {{ _('Newer posts') }}
+                </a>
+              </li>
+              <li class="page-item{% if not next_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ next_url }}" aria-label="{{ _('Older posts') }}">
+                  {{ _('Older posts') }} <span aria-hidden="true">&rarr;</span>
+                </a>
+              </li>
             </ul>
+          </nav>
         </div>
+      </div>
     </div>
-</nav>
-
-<div class="container mt-5 pt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <!-- Add any sidebar content here if needed -->
-        </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
-                    {% if form %}
-                        <div class="form-card">
-                            {{ wtf.quick_form(form) }}
-                        </div>
-                    {% endif %}
-                    {% for post in posts %}
-                        <div class="post-card">
-                            {% include '_post.html' %}
-                        </div>
-                    {% endfor %}
-                    <nav aria-label="Post navigation">
-                        <ul class="pagination">
-                            <li class="page-item{% if not prev_url %} disabled{% endif %}">
-                                <a class="page-link" href="{{ prev_url }}">
-                                    <span aria-hidden="true">&larr;</span> {{ _('Newer posts') }}
-                                </a>
-                            </li>
-                            <li class="page-item{% if not next_url %} disabled{% endif %}">
-                                <a class="page-link" href="{{ next_url }}">
-                                    {{ _('Older posts') }} <span aria-hidden="true">&rarr;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
-
-<footer>
-    <p>&copy; 2024 MySite. All rights reserved.</p>
-</footer>
 {% endblock %}
