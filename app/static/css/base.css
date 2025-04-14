@@ -1,15 +1,32 @@
 :root {
     --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
     --background-opacity: 0.95;
-    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --text-color: #1f2937;
+    --bg-color: #f8fafc;
+    --card-bg: rgba(255, 255, 255, var(--background-opacity));
+    --navbar-bg: rgba(0, 0, 0, 0.85);
+    --footer-bg: rgba(0, 0, 0, 0.85);
+  }
+  
+  [data-theme="dark"] {
+    --text-color: #e5e7eb;
+    --bg-color: #1f2937;
+    --card-bg: rgba(31, 41, 55, var(--background-opacity));
+    --navbar-bg: rgba(17, 24, 39, 0.95);
+    --footer-bg: rgba(17, 24, 39, 0.95);
+    --secondary-color: #9ca3af;
   }
   
   html, body {
     height: 100%;
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background: url('/static/images/background.jpg') no-repeat center center fixed;
+    background: linear-gradient(135deg, var(--bg-color) 0%, var(--secondary-color) 100%) no-repeat center center fixed;
     background-size: cover;
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
   }
   
   body {
@@ -27,24 +44,27 @@
   }
   
   .navbar {
-    background-color: rgba(0, 0, 0, 0.85);
+    background: var(--navbar-bg);
     box-shadow: var(--card-shadow);
+    transition: background 0.3s ease;
   }
   
   .navbar-brand, .nav-link {
-    color: #ffffff;
+    color: #ffffff !important;
     font-weight: 600;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
   }
   
   .navbar-brand:hover, .nav-link:hover {
-    color: #d1d5db;
+    color: #d1d5db !important;
+    transform: translateY(-1px);
   }
   
   .navbar .form-control {
     background-color: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.3);
     color: #ffffff;
+    transition: background 0.3s ease;
   }
   
   .navbar .form-control::placeholder {
@@ -55,36 +75,77 @@
     border-color: #ffffff;
     color: #ffffff;
     font-weight: 600;
+    transition: all 0.2s ease;
   }
   
   .navbar .btn-outline-light:hover {
-    background-color: #ffffff;
+    background: linear-gradient(90deg, #ffffff 0%, #e5e7eb 100%);
     color: #1f2937;
+    transform: translateY(-2px);
+  }
+  
+  .theme-toggle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+  
+  .theme-toggle .sun {
+    display: block;
+  }
+  
+  .theme-toggle .moon {
+    display: none;
+  }
+  
+  [data-theme="dark"] .theme-toggle .sun {
+    display: none;
+  }
+  
+  [data-theme="dark"] .theme-toggle .moon {
+    display: block;
   }
   
   .alert {
     border-radius: 10px;
     margin-bottom: 1.5rem;
+    background: var(--card-bg);
+    color: var(--text-color);
+    animation: fadeIn 0.5s ease-in;
   }
   
   .footer {
-    background-color: rgba(0, 0, 0, 0.85);
+    background: var(--footer-bg);
     color: #ffffff;
-    padding: 1.5rem 0;
+    padding: 2rem 0;
     text-align: center;
+    transition: background 0.3s ease;
   }
   
   .footer p {
     margin: 0;
   }
   
-  .footer a {
-    color: #d1d5db;
-    text-decoration: none;
+  .footer-links {
+    margin-top: 1rem;
   }
   
-  .footer a:hover {
+  .footer-links a {
+    color: #d1d5db;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.2s ease;
+  }
+  
+  .footer-links a:hover {
+    color: #ffffff;
     text-decoration: underline;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   @media (max-width: 768px) {
@@ -94,5 +155,10 @@
   
     .navbar .form-control {
       margin-bottom: 0.5rem;
+    }
+  
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
     }
   }
