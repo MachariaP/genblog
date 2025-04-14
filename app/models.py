@@ -116,6 +116,7 @@ class User(UserMixin, db.Model):
     tasks: so.WriteOnlyMapped['Task'] = so.relationship(back_populates='user')
     liked_posts: so.WriteOnlyMapped['Post'] = so.relationship(
         secondary=post_likes, back_populates='liked_by')
+    comments: so.WriteOnlyMapped['Comment'] = so.relationship(back_populates='author')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
