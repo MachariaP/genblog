@@ -1,0 +1,54 @@
+.card {
+    background-color: rgba(255, 255, 255, var(--background-opacity));
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .greeting {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-card {
+    margin-bottom: 2rem;
+  }
+  
+  .post-card {
+    margin-bottom: 1rem;
+  }
+  
+  .pagination {
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+  }
+  
+  .page-link {
+    border-radius: 8px;
+    margin: 0 0.25rem;
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+  
+  .page-link:hover {
+    background-color: #e5e7eb;
+  }
+  
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 1.5rem;
+    }
+  
+    .greeting {
+      font-size: 1.5rem;
+    }
+  
+    .pagination {
+      justify-content: center;
+    }
+  }
