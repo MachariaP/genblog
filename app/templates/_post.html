@@ -6,7 +6,7 @@
           <img src="{{ post.author.avatar(60) }}" class="post-avatar" alt="{{ _('Avatar of %(username)s', username=post.author.username) }}" loading="lazy">
         </a>
         {% else %}
-        <img src="{{ url_for('static', filename='default_avatar.png') }}" class="post-avatar" alt="{{ _('Default avatar') }}" loading="lazy">
+        <img src="{{ url_for('static', filename='images/default_avatar.png') }}" class="post-avatar" alt="{{ _('Default avatar') }}" loading="lazy">
         {% endif %}
       </div>
       <div class="flex-grow-1">
@@ -27,18 +27,37 @@
         </div>
         {% endif %}
         <div class="post-actions mt-2">
-          <button class="btn btn-outline-primary btn-sm post-like" data-post-id="{{ post.id }}" aria-label="{{ _('Like post') }}">
+          <button class="btn btn-outline-primary btn-sm post-like {% if current_user.is_authenticated and current_user.has_liked_post(post) %}liked{% endif %}" data-post-id="{{ post.id }}" aria-label="{{ _('Like post') }}">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646a.5.5 0 0 1 .792-.546l2.354 2.708 2.354-2.708a.5.5 0 0 1 .792.546l-3 3.5a.5.5 0 0 1-.792 0l-3-3.5z"/>
             </svg>
-            <span class="like-count">{{ post.likes | default(0) }}</span>
+            <span class="like-count">{{ post.like_count }}</span>
           </button>
-          <button class="btn btn-outline-primary btn-sm post-comment" data-post-id="{{ post.id }}" aria-label="{{ _('Comment on post') }}">
+          <button class="btn btn-outline-primary btn-sm post-comment" data-bs-toggle="modal" data-bs-target="#commentModal-{{ post.id }}" data-post-id="{{ post.id }}" aria-label="{{ _('Comment on post') }}">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path d="M3.5 1A1.5 1.5 0 0 0 2 2.5V12a1.5 1.5 0 0 0 1.5 1.5h9.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 12H3.5A.5.5 0 0 1 3 11.5V2.5A.5.5 0 0 0 3.5 1z"/>
             </svg>
-            <span class="comment-count">{{ post.comments | default(0) }}</span>
+            <span class="comment-count">{{ post.comment_count }}</span>
           </button>
+        </div>
+        <!-- Comment Modal -->
+        <div class="modal fade" id="commentModal-{{ post.id }}" tabindex="-1" aria-labelledby="commentModalLabel-{{ post.id }}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="commentModalLabel-{{ post.id }}">{{ _('Comment on Post') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Close') }}"></button>
+              </div>
+              <div class="modal-body">
+                <textarea class="form-control" id="commentText-{{ post.id }}" rows="3" maxlength="140" placeholder="{{ _('Your comment...') }}"></textarea>
+                <small class="text-muted">{{ _('Max 140 characters') }}</small>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+                <button type="button" class="btn btn-primary submit-comment" data-post-id="{{ post.id }}" onclick="submitComment({{ post.id }})">{{ _('Submit') }}</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
