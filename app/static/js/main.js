@@ -39,29 +39,35 @@ document.querySelectorAll('.post-like').forEach(button => {
   });
 });
 
-document.querySelectorAll('.post-comment').forEach(button => {
-  button.addEventListener('click', () => {
-    const postId = button.dataset.postId;
-    const comment = prompt('Enter your comment (max 140 characters):');
-    if (comment && comment.length <= 140) {
-      fetch(`/comment/${postId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ comment })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (response.ok) {
-          button.querySelector('.comment-count').textContent = data.comments;
-          console.log('Comment posted:', data.comment);
-        } else {
-          console.error('Comment failed:', data.error);
-        }
-      })
-      .catch(error => console.error('Comment error:', error));
-    }
-  });
-});
+function submitComment(postId) {
+  const textarea = document.getElementById(`commentText-${postId}`);
+  const comment = textarea.value.trim();
+  if (comment && comment.length <= 140) {
+    fetch(`/comment/${postId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ comment })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (response.ok) {
+        const commentButton = document.querySelector(`.post-comment[data-post-id="${postId}"]`);
+        commentButton.querySelector('.comment-count').textContent = data.comments;
+        textarea.value = ''; // Clear textarea
+        bootstrap.Modal.getInstance(document.getElementById(`commentModal-${postId}`)).hide();
+      } else {
+        console.error('Comment failed:', data.error);
+        alert(data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Comment error:', error);
+      alert('Failed to submit comment');
+    });
+  } else {
+    alert('Comment must be 1-140 characters');
+  }
+}
 
 // Lazy-load images
 document.querySelectorAll('img[loading="lazy"]').forEach(img => {
