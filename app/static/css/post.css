@@ -73,8 +73,30 @@
     transform: translateY(-1px);
   }
   
+  .post-like.liked {
+    color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .post-like.liked svg {
+    fill: #dc3545;
+  }
+  
   .like-count, .comment-count {
     font-size: 0.875rem;
+  }
+  
+  .modal-content {
+    background: var(--card-bg);
+    color: var(--text-color);
+  }
+  
+  .modal-header, .modal-footer {
+    border-color: var(--secondary-color);
+  }
+  
+  .modal-body textarea {
+    resize: none;
   }
   
   @media (max-width: 768px) {
