@@ -1,12 +1,12 @@
-<div class="post-card">
+<div class="post-card animate">
     <div class="post-content d-flex">
       <div class="post-avatar-container me-3">
         {% if post.author %}
         <a href="{{ url_for('main.user', username=post.author.username) }}" aria-label="{{ _('View profile of %(username)s', username=post.author.username) }}">
-          <img src="{{ post.author.avatar(60) }}" class="post-avatar" alt="{{ _('Avatar of %(username)s', username=post.author.username) }}">
+          <img src="{{ post.author.avatar(60) }}" class="post-avatar" alt="{{ _('Avatar of %(username)s', username=post.author.username) }}" loading="lazy">
         </a>
         {% else %}
-        <img src="{{ url_for('static', filename='default_avatar.png') }}" class="post-avatar" alt="{{ _('Default avatar') }}">
+        <img src="{{ url_for('static', filename='default_avatar.png') }}" class="post-avatar" alt="{{ _('Default avatar') }}" loading="lazy">
         {% endif %}
       </div>
       <div class="flex-grow-1">
@@ -26,6 +26,20 @@
           <a href="javascript:void(0)" class="translate-link" onclick="translate('post-{{ post.id }}', 'translation-{{ post.id }}', '{{ post.language }}', '{{ g.locale }}');" aria-label="{{ _('Translate post') }}">{{ _('Translate') }}</a>
         </div>
         {% endif %}
+        <div class="post-actions mt-2">
+          <button class="btn btn-outline-primary btn-sm post-like" data-post-id="{{ post.id }}" aria-label="{{ _('Like post') }}">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646a.5.5 0 0 1 .792-.546l2.354 2.708 2.354-2.708a.5.5 0 0 1 .792.546l-3 3.5a.5.5 0 0 1-.792 0l-3-3.5z"/>
+            </svg>
+            <span class="like-count">{{ post.likes | default(0) }}</span>
+          </button>
+          <button class="btn btn-outline-primary btn-sm post-comment" data-post-id="{{ post.id }}" aria-label="{{ _('Comment on post') }}">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M3.5 1A1.5 1.5 0 0 0 2 2.5V12a1.5 1.5 0 0 0 1.5 1.5h9.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 12H3.5A.5.5 0 0 1 3 11.5V2.5A.5.5 0 0 0 3.5 1z"/>
+            </svg>
+            <span class="comment-count">{{ post.comments | default(0) }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
