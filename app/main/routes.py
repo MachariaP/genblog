@@ -246,7 +246,7 @@ def messages():
                            per_page=current_app.config['POSTS_PER_PAGE'],
                            error_out=False)
     next_url = url_for('main.messages', page=messages.next_num) if messages.has_next else None
-    prev_url = url_for('main.messages', page=messages.prev_num) if posts.has_prev else None
+    prev_url = url_for('main.messages', page=messages.prev_num) if messages.has_prev else None
     return render_template('messages.html', messages=messages.items,
                            next_url=next_url, prev_url=prev_url)
 
