@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="hero-section text-center mb-5">
+<div class="hero-section text-center mb-5" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/hero-bg.jpg') no-repeat center center; background-size: cover;">
   <h1 class="hero-title">{{ _('Welcome to Genblog') }}</h1>
   <p class="hero-subtitle">{{ _('Share your stories, connect with others, and explore new ideas') }}</p>
   {% if current_user.is_anonymous %}
@@ -21,13 +21,13 @@
           {% if current_user.is_authenticated %}
           <h2 class="greeting">{{ _('Hi, %(username)s!', username=current_user.username) }}</h2>
           {% if form %}
-          <div class="form-card shadow-sm">
+          <div class="form-card shadow-sm mb-4">
             {{ wtf.quick_form(form) }}
           </div>
           {% endif %}
           {% endif %}
           {% for post in posts %}
-          <div class="post-card animate">
+          <div class="post-card animate mb-3">
             {% include '_post.html' %}
           </div>
           {% endfor %}
